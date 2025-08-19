@@ -3,11 +3,11 @@ import { EditorHeader, Editor } from '@/components/index';
 import useEditor from '@/hooks/useEditor';
 import Head from 'next/head';
 
-const MarkdownEditor = () => {  
-    const{articleDetails,handleValueChange,uploadImage,isDiasbled,
-        isUnsplashVisible,toggleUnsplash,unsplashSearch,togglePublishing,isPublishing,addTag,removeTag,
-        getUnsplashTerm,insertMarkdown,getUnSplashUrl,changeRoute,
-        updateArticleInFirebase, isvisible, toggleVisible}=useEditor()
+const MarkdownEditor = () => {
+    const { articleDetails, handleValueChange, isDiasbled,
+        isUnsplashVisible, toggleUnsplash, unsplashSearch, togglePublishing, isPublishing, addTag, removeTag,
+        getUnsplashTerm, insertMarkdown, getUnSplashUrl, changeRoute,
+        updateArticleInFirebase, isvisible, toggleVisible } = useEditor()
 
     return (
         <>
@@ -28,7 +28,6 @@ const MarkdownEditor = () => {
                 isvisible={isvisible}
                 handleVisible={toggleVisible}
                 articleDetails={articleDetails}
-                uploadImage={uploadImage}
                 isUnsplashVisible={isUnsplashVisible}
                 toggleUnsplash={toggleUnsplash}
                 unsplashSearch={unsplashSearch}
