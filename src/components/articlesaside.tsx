@@ -9,6 +9,7 @@ import { useCurrentUserState } from '@/store/user.store';
 function ArticleSide({ isvisible, handleVisible }: { isvisible: boolean, handleVisible: (e: React.MouseEvent) => void }) {
     const { currentUser } = useCurrentUserState()
     const { articles } = currentUser
+    console.log(articles)
     const publishedLength = articles.filter((doc: any) => doc.is_published === true).length;
     const draftLength = articles.filter((doc: any) => doc.is_published === false).length;
     const [showdeleteModal, setShowDeleteModal] = useState(false)
@@ -25,7 +26,7 @@ function ArticleSide({ isvisible, handleVisible }: { isvisible: boolean, handleV
             data-visible={isvisible}>
             <button className='absolute top-1 lg:hidden' onClick={handleVisible}>close</button>
             <div className={`mb-12`}>
-                <h1 className={`mb-2 font-medium text-amber-950`}>My Drafts</h1>
+                <h1 className={`mb-2 font-medium text-amber-950`}>My Drafts {draftLength > 0 && `(${draftLength})`}</h1>
                 <ul>
                     {/* {
                         loading &&
@@ -61,7 +62,7 @@ function ArticleSide({ isvisible, handleVisible }: { isvisible: boolean, handleV
                 </ul>
             </div>
             <div>
-                <h1 className={`mb-4 font-medium text-amber-950`}>Published</h1>
+                <h1 className={`mb-4 font-medium text-amber-950`}>Published {publishedLength > 0 && `(${publishedLength})`}</h1>
                 <ul>
                     {/* {
                         loading &&

@@ -52,7 +52,7 @@ export const errorHandler = (
 		toastError('Session expired, please login again.');
 		sessionStorage.removeItem('access_token');
       Cookies.remove('loggedin');
-      window.location.href = "/login";
+      window.location.href = "/";
       
       // Optional: Redirect to login or clear token here if needed
 

@@ -14,7 +14,7 @@ function ArticleCard({ feed, update }: { feed: ArticleProps, update: (id: string
     return (
         <li className={`px-5 border-gray-100 border-2 py-4 rounded-lg mb-3 `}>
             <div className="flex items-center gap-2 mb-2">
-                <Link href={`/profile/${encodeURIComponent(feed?.author?.id)}`} className={`flex items-center gap-1 `}>
+                <Link href={`/${encodeURIComponent(feed?.author?.username)}`} className={`flex items-center gap-1 `}>
                     {
                         feed?.author?.profile_image === null ?
                             <Image className={`rounded-full`} src="/images/icons8-user.svg" width={30} height={30} alt="author avatar" />
@@ -31,7 +31,7 @@ function ArticleCard({ feed, update }: { feed: ArticleProps, update: (id: string
                     </div>
                 }
             </div>
-            <Link className={`grid grid-cols-5 gap-3 items-center`} href={`/inkspire/${encodeURIComponent(feed?.id!)}`}>
+            <Link className={`grid grid-cols-5 gap-3 items-center`} href={`/${encodeURIComponent(feed?.author.username)}/post/${encodeURIComponent(feed?.id)}`}>
                 <div className={`col-span-5 lg:col-span-3 mb-2`}>
                     <h1 className={`text-2xl font-bold mb-1 break-words`}>{feed?.title}</h1>
                     <div className="flex items-center gap-2"><Image src='/images/icons8-read-30.png' width={24} height={24} alt="opened book" /> {feed?.reading_time} min read</div>

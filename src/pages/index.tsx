@@ -13,6 +13,7 @@ import { AxiosError } from 'axios';
 import { toast } from "sonner";
 import { login } from '@/services/auth.service';
 import { useMutation } from '@tanstack/react-query';
+import { Loader2 } from 'lucide-react';
 
 
 export default function Home() {
@@ -121,12 +122,13 @@ export default function Home() {
 								className={`block text-right mb-8 text-violet-700`}>
 								forgot password
 							</Link>
-							<input
+							<button
 								disabled={isPending}
 								type='submit'
-								value='Log in'
-								className={`cursor-pointer mb-2 block w-full p-2 bg-violet-700 text-white rounded-lg hover:bg-black hover:text-white ${isPending && 'opacity-50'}}`}
-							/>
+								className={`cursor-pointer mb-2 flex items-center justify-center w-full p-2 bg-violet-700 text-white rounded-lg hover:bg-black hover:text-white ${isPending && 'opacity-50'}}`}
+							>
+								Log in {isPending && <Loader2 className="animate-spin"/>}
+							</button>
 							<p className={`text-center`}>
 								Don&apos;t have an account?{' '}
 								<Link href='signup' className='text-violet-700'>Create one</Link>{' '}

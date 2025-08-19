@@ -18,6 +18,7 @@ import { useBookmarkArticle } from "@/services/bookmark.service";
 import { useCurrentUserState } from "@/store/user.store";
 import { queryClient } from "@/context/tanstack-provider";
 import { AxiosError } from "axios";
+import { Loader2 } from "lucide-react";
 
 export async function getServerSideProps(context: any) {
 
@@ -32,7 +33,7 @@ export async function getServerSideProps(context: any) {
     }
 }
 
-export default function SingleArticle({ title, image, description, url }: any) {
+export default function SingleArticle({ title, image, description }: any) {
     const { currentUser } = useCurrentUserState()
     const router = useRouter();
     const { id } = router.query;
@@ -77,10 +78,10 @@ export default function SingleArticle({ title, image, description, url }: any) {
     const handleRoute = () => {
         router.back();
     }
-    if (!article) {
+    if (!article && !isLoading) {
         return (
             <>
-                Health
+                Article Not found
             </>
         )
     }
@@ -104,15 +105,15 @@ export default function SingleArticle({ title, image, description, url }: any) {
             </Head>
             <FeedLayout>
                 <main className={` md:w-10/12 mx-auto lg:w-8/12 `}>
-                    <div className="flex items-center mb-6 gap-4">
+                    {/* <div className="flex items-center mb-6 gap-4">
                         <button
                             onClick={handleRoute}
                             className={`${styles.back} cursor-pointer`}
                             aria-label='menu'
                         ></button>   <h1 className="font-bold text-3xl">Article</h1>
-                    </div>
+                    </div> */}
                     {
-                        isLoading && <>loading...</>
+                        isLoading && <Loader2 className="animate-spin" />
                     }
                     {article?.cover_image?.length > 2 &&
                         <div className={`relative h-96 mb-4`}>
@@ -140,7 +141,7 @@ export default function SingleArticle({ title, image, description, url }: any) {
                             article?.title?.length > 1 &&
                             <div className="flex items-center justify-center gap-1">
                                 <span>{published}</span>
-                                <div className="flex items-center gap-2"><Image src='/images/icons8-read-30.png' width={24} height={24} alt="opened book" /> {article?.readingTime} min read</div>
+                                <div className="flex items-center gap-2"><Image src='/images/icons8-read-30.png' width={24} height={24} alt="opened book" /> {article?.reading_time} min read</div>
                             </div>
                         }
                     </Link>
@@ -270,7 +271,7 @@ export default function SingleArticle({ title, image, description, url }: any) {
                             <div className="flex flex-wrap gap-2">
                                 {article?.topics?.map((topic: any, index: number) => {
                                     return (
-                                        <Link href={`/n?q=${topic.title}`} key={index} className="bg-gray-200 px-2 py-1 rounded-lg text-sm text-gray-600 hover:bg-gray-200">
+                                        <Link href={`/topic?q=${topic.title}`} key={index} className="bg-gray-200 px-2 py-1 rounded-lg text-sm text-gray-600 hover:bg-gray-200">
                                             {topic}
                                         </Link>
                                     )
@@ -284,7 +285,7 @@ export default function SingleArticle({ title, image, description, url }: any) {
                             Comment{article?.comments?.length > 1 ? "s" : ""}
                             ({article?.comments?.length})
                         </h2>
-                        <Link href={`/${encodeURIComponent(article?.author_id)}`} className={`flex items-center gap-1 mb-8`}>
+                        <Link href={`/${encodeURIComponent(article?.author?.id)}`} className={`flex items-center gap-1 mb-8`}>
                             {currentUser?.profile_image  ?
                                 <Image className={`rounded-full`} src={currentUser?.profile_image} width={30} height={30} alt="author avatar" />
                                 :                                 <Image className={`rounded-full`} src={"/images/icons8-user-64.png"} width={30} height={30} alt="author avatar" />

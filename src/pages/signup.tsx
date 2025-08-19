@@ -41,7 +41,7 @@ function SignUp() {
 			toast.success("Account Created", {
 				description:"Account Created Successfully",
 			});
-			router.push("/topics")
+			router.push("/add-topics")
 		},
 		onError: (error: AxiosError) => {
 			toast.error("Account Creation Failed", {

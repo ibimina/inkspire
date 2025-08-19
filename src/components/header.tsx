@@ -8,6 +8,7 @@ import { useCurrentUserState } from '@/store/user.store';
 import { getDashboardInfo } from '@/services/user.service';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import { SearchIcon } from 'lucide-react';
 
 function Header({ handleNav }: { handleNav: () => void }) {
     const [isClicked, setIsClicked] = useState(false)
@@ -32,7 +33,7 @@ function Header({ handleNav }: { handleNav: () => void }) {
         e.preventDefault();
         const input = e.currentTarget.childNodes[0] as HTMLInputElement
         const search = input.value
-        router.push(`/search?q=${search}`)
+        router.push(`/search?search_string=${search}`)
     }
     const handleLogout = async () => {
         await logoutUser()
@@ -55,7 +56,7 @@ function Header({ handleNav }: { handleNav: () => void }) {
                         <h1 className={`font-bold text-3xl font-serif text-transparent bg-clip-text bg-gradient-to-br  from-purple-700 to-blue-400 `}>InkSpire</h1>
                     </Link>
                 </div>
-                {router.pathname !== '/settings' &&
+                {/* {router.pathname !== '/settings' &&
                     <form
                         onSubmit={getSearchAndRedirect}
                         className={`col-span-4 row-start-2 mt-5 lg:mt-0 lg:col-span-3 lg:row-start-1 lg:col-start-3`}
@@ -66,7 +67,7 @@ function Header({ handleNav }: { handleNav: () => void }) {
                             placeholder='what would you like to read?'
                         />
                     </form>
-                }
+                } */}
                 <nav className={`col-start-3 lg:col-start-6 lg:col-end-8`}>
                     <ul className={`flex items-center gap-2 justify-end`}>
                         {
@@ -101,6 +102,12 @@ function Header({ handleNav }: { handleNav: () => void }) {
                                     alt='notification'
                                 />
                                 <span className={`sr-only`}>notification</span>
+                            </Link>
+                        </li>
+                           <li >
+                            <Link href='/search' className='relative'>                      
+                               <SearchIcon className='h-6 w-6' />
+                                <span className={`sr-only`}>search</span>
                             </Link>
                         </li>
                         <li

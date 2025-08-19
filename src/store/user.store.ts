@@ -7,7 +7,7 @@ const defaultUser: TUserType = {
   email: "",
   username: "",
   profile_image: "",
-  topics: [],
+  interested_topics: [],
   articles:[],
   profile_tagline: "",
   location: "",

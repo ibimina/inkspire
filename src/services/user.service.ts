@@ -20,6 +20,10 @@ export const getUserById = async (id: string) => {
 	return await api.get(`/users/${id}`);
 };
 
+export const getSearchRequest = async (search_string: string) => {
+	return await api.get(`/articles/search?search_string=${search_string}`);
+};
+
 // feeds tanstack query
 export const useGetAllFeeds = () => {
 	const { data, isLoading, error, refetch } = useQuery({

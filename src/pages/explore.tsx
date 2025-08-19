@@ -47,10 +47,12 @@ const {currentUser} = useCurrentUserState()
                     <div className={`grid md:grid-cols-2 lg:grid-cols-3 gap-3 my-8`}>
                         {topics && topics.map((topic:{title: string, id:string}) =>
                             <div key={topic.title} className={`flex justify-between items-center bg-stone-200 hover:bg-zinc-300  cursor-pointer`} aria-selected='false'>
-                                <Link className={`px-4 py-3 font-medium`} href={`/n?q=${topic?.title}`}>{topic?.title} </Link>
+                                <Link className={`px-4 py-3 font-medium`} href={`/topic?q=${topic?.title}`}>{topic?.title} </Link>
                                 <button
                                     onClick={(e) => addUserTopic(e, topic.id)}
-                                    className={`bg-contain bg-no-repeat bg-center w-5 h-5 m-2 ${styles.add}`} aria-label="add tag" aria-pressed={currentUser.topics.some(t=> t.title.toLowerCase() === topic?.title.toLowerCase()) ? "true" : "false"}>
+                                    className={`bg-contain bg-no-repeat bg-center w-5 h-5 m-2 ${styles.add}`}
+                                    aria-label="add tag"
+                                    aria-pressed={currentUser.interested_topics.find(t => t.title.toLowerCase() === topic?.title.toLowerCase()) ? "true" : "false"}>
                                 </button>
 
                             </div>

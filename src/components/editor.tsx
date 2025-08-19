@@ -20,7 +20,6 @@ interface NewType {
     getUnSplashUrl: (url: string) => void;
     isUnsplashVisible: boolean;
     toggleUnsplash: () => void;
-    uploadImage: (e: React.ChangeEvent<HTMLInputElement>) => void;
     isvisible: boolean;
     handleVisible: (e: React.MouseEvent) => void;
     publishArticle: (e: React.MouseEvent) => void;
@@ -31,7 +30,7 @@ interface NewType {
     isDiasbled: boolean;
 }
 
-function Editor({ unsplashSearch, isUnsplashVisible, uploadImage, isvisible,isDiasbled,
+function Editor({ unsplashSearch, isUnsplashVisible, isvisible, isDiasbled,
     toggleUnsplash, getUnsplashTerm, removeTag, isPublishing, togglePublishing,
     articleDetails, handleValueChange, insertMarkdown, getUnSplashUrl, handleVisible, publishArticle, addTag }: NewType) {
 
@@ -39,7 +38,7 @@ function Editor({ unsplashSearch, isUnsplashVisible, uploadImage, isvisible,isDi
     const [hide, setHide] = useState<boolean>(true);
     const [page, setPage] = useState<number>(1);
     const router = useRouter();
-const {currentUser} = useCurrentUserState()
+    const { currentUser } = useCurrentUserState()
     const toggleEmojiPicker = () => {
         return setShowEmojiPicker(!showEmojiPicker)
     }
@@ -48,7 +47,7 @@ const {currentUser} = useCurrentUserState()
         insertMarkdown(`${emoji.emoji} `);
     };
 
-    const { fetchedData,getSearchData } = useFetch(unsplashSearch,page)
+    const { fetchedData, getSearchData } = useFetch(unsplashSearch, page)
     const getPicturesFromUnsplash = async (e: React.FormEvent) => {
         e.preventDefault();
         setPage(1)
@@ -58,7 +57,7 @@ const {currentUser} = useCurrentUserState()
     const onScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
         const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
         if (scrollHeight - scrollTop === clientHeight) {
-            setPage((page)=> page + 1)
+            setPage((page) => page + 1)
         }
     }
 
@@ -83,10 +82,6 @@ const {currentUser} = useCurrentUserState()
                     <div>
                         <div className={`relative`}>
                             {hide && <div className={`flex items-center mb-1 gap-2`}>
-                                <label className={`${styles.fileInput}`}>
-                                    <input type="file" onChange={uploadImage} />
-                                    <span>upload image</span>
-                                </label>
                                 <button onClick={toggleUnsplash} className={`${styles.unsplash}`} >Unsplash</button>
                                 <div data-visible={isUnsplashVisible} className={`${styles.unsplashDropdown} bg-gray-100 mt-3`} onScroll={onScroll}>
                                     <form onSubmit={getPicturesFromUnsplash} className="p-2">
@@ -177,8 +172,8 @@ const {currentUser} = useCurrentUserState()
                 <div className={`fixed top-0 left-0 w-full h-full bg-slate-900 bg-opacity-50`}>
                     <div className={`bg-white p-4 w-full md:w-9/12  ml-auto h-full relative`}>
                         <div className="flex items-center justify-between mb-6">
-                            <button className={`mb-2`} onClick={togglePublishing}>Close</button>
-                                <button className={`p-2 rounded-2xl ${isDiasbled ? "bg-gray-500 text-black" : "text-white bg-violet-700"}`} disabled={isDiasbled} onClick={publishArticle}> {`${isDiasbled ? "Publishing" :"Publish now"}`}</button>
+                            <button className={`mb-2`} disabled={isDiasbled} onClick={togglePublishing}>Close</button>
+                            <button className={`p-2 rounded-2xl ${isDiasbled ? "bg-gray-500 text-black" : "text-white bg-violet-700"}`} disabled={isDiasbled} onClick={publishArticle}> {`${isDiasbled ? "Publishing" : "Publish now"}`}</button>
                         </div>
                         <p className="mb-8">Add or change topics (up to 5) so readers know what your story is about</p>
 
@@ -187,7 +182,7 @@ const {currentUser} = useCurrentUserState()
                             className="flex items-center mb-2 gap-2 w-full"
                         >
                             <input type="text" name="tags" className="block p-2 border-2 w-9/12 border-gray border-solid rounded-md" />
-                            <button type="submit" className="bg-violet-500 cursor-pointer text-gray-100 p-2 rounded-md">Add</button>
+                            <button type="submit" disabled={isDiasbled} className="bg-violet-500 cursor-pointer text-gray-100 p-2 rounded-md">Add</button>
                         </form>
                         <p className="mb-8">Topics are optional, but they help surface your story to the right readers</p>
 

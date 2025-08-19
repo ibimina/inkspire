@@ -6,7 +6,7 @@ export default function middleware(req: NextRequest) {
     let verify = req.cookies.get("loggedin");
     let url = req.url
 
-    if (!verify && url.includes('/settings') || !verify && url.includes('/chatter') || !verify && url.includes('/topics') || !verify && url.includes('/bookmarks') || !verify && url.includes('/explore') || !verify && url.includes('/post') || !verify && url.includes('/edit') || !verify && url.includes('/draft') || !verify && url.includes('/n') || !verify && url.includes('/notifications')|| !verify && url.includes('/search') || !verify && url.includes('/messages')) {
+    if (!verify && url.includes('/settings') || !verify && url.includes('/chatter') || !verify && url.includes('/add-topics') || !verify && url.includes('/bookmarks') || !verify && url.includes('/explore') || !verify && url.includes('/post') || !verify && url.includes('/edit') || !verify && url.includes('/draft') || !verify && url.includes('/n') || !verify && url.includes('/notifications')|| !verify && url.includes('/search') || !verify && url.includes('/messages')) {
         let url = req.nextUrl.clone()
         url.pathname = '/'
         return NextResponse.redirect(url);
@@ -21,5 +21,5 @@ export default function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/','/bookmarks', '/chatter', '/explore', '/post', '/settings',"/signup", '/topics', '/edit', '/draft', '/n', '/notifications','/search', '/forgotpassword','/messages','/resetpassword'],
+    matcher: ['/','/bookmarks', '/chatter', '/explore', '/post', '/settings',"/signup", '/add-topics', '/edit', '/draft', '/n', '/notifications','/search', '/forgotpassword','/messages','/resetpassword'],
 }

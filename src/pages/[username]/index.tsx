@@ -18,12 +18,12 @@ import { useBookmarkArticle } from "@/services/bookmark.service";
 
 function ViewProfile() {
     const router = useRouter();
-    const author = router.query.author
+    const username = router.query.username
     const [viewFollowers, setViewFollowers] = useState(false)
     const [viewFollowing, setViewFollowing] = useState(false)
     const [viewTopic, setIsViewTopic] = useState(false)
     const { currentUser } = useCurrentUserState();
-    const { user } = useGetUserById(author as string);
+    const { user } = useGetUserById(username as string);
     const { mutate, isPending } = useBookmarkArticle("user")
     const queryClient = useQueryClient();
 
@@ -49,27 +49,6 @@ function ViewProfile() {
                 toast.error('An error occurred'), console.error(error);
             },
        });
-    // const handleRoute = () => {
-    //     router.push("/feeds");
-    // };
-
-
-
-    // const bookmarkArticle = async (articleId: string) => {
-    //         try {
-    //             const res = await requestBookmark(articleId);
-    //             if (res.status === 200) {
-    //                 toast.success('Bookmark added successfully');
-    //                     queryClient.invalidateQueries({ queryKey: ["feeds"] }); 
-    //             } else {
-    //                 throw new Error('Failed to add bookmark');
-    //             }
-    //         } catch (error) {
-    //             console.error('Error adding bookmark:', error);
-    //             toast.error("Error adding bookmark")
-    //         }
-    // };
-
 
     return (<>
         <Head>
@@ -178,22 +157,22 @@ function ViewProfile() {
                                     </ul>
                                 }
                                 {!viewTopic && user?.following_count === 0 && <p className="text-center mb-4">no following</p>}
-                                {viewTopic && user?.topics?.length === 0 && <p className="text-center mb-4">no topics</p>}
+                                {viewTopic && user?.interested_topics?.length === 0 && <p className="text-center mb-4">no topics</p>}
 
-                                {viewTopic && user.topics?.length > 0 &&
+                                {viewTopic && user.interested_topics?.length > 0 &&
                                     <ul className="px-4">
                                         {
-                                            user.topics?.map((topic: any, index: Key) => {
+                                            user.interested_topics?.map((topic: any, index: Key) => {
                                                 return (
                                                     <div key={index} className="flex items-center justify-between">
-                                                        <Link className={`px-4 py-3 font-medium`} href={`/n?q=${topic.title}`}>
+                                                        <Link className={`px-4 py-3 font-medium`} href={`/topic?q=${topic.title}`}>
                                                             <p>{topic.title}</p>
                                                             <p>{topic.count}</p>
                                                         </Link>
                                                         <button
                                                             onClick={() => handelTopic(topic.id)}
                                                             className="bg-slate-400 px-3 py-1 w-15">
-                                                            {`${currentUser?.topics?.includes(topic.title) ? "following" : "follow"}`}</button>
+                                                            {`${currentUser?.interested_topics?.includes(topic.title) ? "following" : "follow"}`}</button>
                                                     </div>)
                                             })}
                                     </ul>
@@ -217,7 +196,7 @@ function ViewProfile() {
                                 { currentUser.following?.some((f: { id: string }) => f.id === user.id)  ? "following" : "follow +"}
                             </button>
                         }
-                        <button onClick={() => router.push(`/messages?q=${author}`)} className="cursor-pointer bg-slate-300 rounded-2xl px-4 py-2">
+                        <button onClick={() => router.push(`/messages?q=${username}`)} className="cursor-pointer bg-slate-300 rounded-2xl px-4 py-2">
                             message
                         </button>
                     </div>
@@ -243,11 +222,11 @@ function ViewProfile() {
                     <div className="mb-8">
                         <p className="my-3 font-medium">My Topics</p>
                         <ul className="flex items-center gap-2 flex-wrap">
-                            {user?.topics?.length > 0 ?
-                                user?.topics?.map((doc: string, index: Key) =>
+                            {user?.interested_topics?.length > 0 ?
+                                user?.interested_topics?.map((doc: { title: string }, index: Key) =>
                                     <>
                                         <li key={index} className="bg-violet-500 p-2 rounded-sm text-white">
-                                            {doc}
+                                            {doc.title}
                                         </li>
                                     </>
                                 )
@@ -262,7 +241,7 @@ function ViewProfile() {
                 <div>
                     <p className="font-semibold mb-3 text-3xl text-violet-900">Articles</p>
                     <ul>
-                        {user.articles_count > 0 ? user?.articles_count?.map((article: any, index: Key) =>
+                        {user.articles?.length > 0 ? user?.articles?.map((article: any, index: Key) =>
                             <ArticleCard key={index} feed={article}
                                 update={mutate}
                             />

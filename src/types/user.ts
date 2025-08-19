@@ -3,7 +3,7 @@ export type TUserType = {
 	email: string | null;
 	username: string | null;
 	profile_image: string | null;
-	topics: {title:string}[] ;
+	interested_topics: {title:string, id:string}[] ;
 	profile_tagline: string;
 	location: string;
 	bio: string;

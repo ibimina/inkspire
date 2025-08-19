@@ -22,7 +22,7 @@ const useGoogleSignin = () => {
         //         await setDoc(doc(firebaseStore, "users", user?.uid), userInfo);
         //         dispatch(signIn(userInfo))
         //         Cookies.set("loggedin", "true");
-        //         router.push('/topics');
+        //         router.push('/add-topics');
         //     }
           
         // } catch (error: any) {

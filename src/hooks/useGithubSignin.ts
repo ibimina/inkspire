@@ -21,7 +21,7 @@ const useGitHubSignin = () => {
         //         }
         //         await setDoc(doc(firebaseStore, "users", user?.uid), userInfo);
         //         dispatch(signIn(userInfo))
-        //         router.push('/topics');
+        //         router.push('/add-topics');
         //         Cookies.set("loggedin", "true");
         //     }
         // } catch (error: any) {

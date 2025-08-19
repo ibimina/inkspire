@@ -5,7 +5,7 @@ import Head from 'next/head';
 
 const MarkdownEditor = () => {
   
-    const { articleDetails, handleValueChange, uploadImage, changeRoute, togglePublishing,isPublishing,isDiasbled,
+    const { articleDetails, handleValueChange, changeRoute, togglePublishing,isPublishing,isDiasbled,
         isUnsplashVisible, toggleUnsplash, unsplashSearch, isvisible, toggleVisible, removeTag, addTag,
         getUnsplashTerm, insertMarkdown, getUnSplashUrl, updateArticleInFirebase } = useEditor()
 
@@ -30,7 +30,6 @@ const MarkdownEditor = () => {
                     isvisible={isvisible}
                     handleVisible={toggleVisible}
                     articleDetails={articleDetails}
-                    uploadImage={uploadImage}
                     isUnsplashVisible={isUnsplashVisible}
                     toggleUnsplash={toggleUnsplash}
                     unsplashSearch={unsplashSearch}

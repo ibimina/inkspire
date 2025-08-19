@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import {
 	createArticle,
 	getArticleById,
+	updateArticle,
 } from '@/services/article.service';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
@@ -11,17 +12,6 @@ import { toast } from 'react-toastify';
 function useEditor() {
 	const router = useRouter();
 	const id = router.query.id;
-	const { mutate } = useMutation({
-		mutationFn: getArticleById,
-		onSuccess: async (response) => {
-			setArticleDetails(response?.data);
-			toast.success('Article fetched successfully');
-		},
-		onError: (error: AxiosError) => {
-			toast.error('Failed to fetch article');
-		},
-	});
-
 	const [unsplashSearch, setUnsplashSearch] = useState<string>('Inspiration');
 	const [isUnsplashVisible, setIsUnsplashVisible] = useState<boolean>(false);
 	const [isvisible, setIsVisible] = useState<boolean>(false);
@@ -60,6 +50,21 @@ function useEditor() {
 	const togglePublishing = () => {
 		setIsPublishing(!isPublishing);
 	};
+	const { mutate } = useMutation({
+		mutationFn: getArticleById,
+		onSuccess: async (response) => {
+			setArticleDetails({
+				...response?.data,
+				topics: response?.data?.topic?.map(
+					(topic: { title: string }) => topic.title
+				),
+			});
+			toast.success('Article fetched successfully');
+		},
+		onError: (error: AxiosError) => {
+			toast.error('Failed to fetch article');
+		},
+	});
 
 	useEffect(() => {
 		if (id) return mutate(id as string);
@@ -71,14 +76,25 @@ function useEditor() {
 			router.push(`/article/${response.data.id}`);
 
 			toast.success('Article fetched successfully');
-            return
+			return;
 		},
 		onError: (error: AxiosError) => {
 			toast.error('Failed to fetch article');
 		},
 	});
 
-	const publishArticle =  (e: React.MouseEvent) => {
+	const { mutate: handleEditArticle, isPending: isEditing } = useMutation({
+		mutationFn: updateArticle,
+		onSuccess: async (response) => {
+			router.push(`/article/${response.data.id}`);
+			return;
+		},
+		onError: (error: AxiosError) => {
+			toast.error('Failed to fetch article');
+		},
+	});
+
+	const publishArticle = (e: React.MouseEvent) => {
 		e.preventDefault();
 		if (articleDetails.title.trim() === '') {
 			toast.error('Looks like you forgot to add a title');
@@ -101,17 +117,30 @@ function useEditor() {
 
 	const updateArticleInFirebase = async (e: React.MouseEvent) => {
 		e.preventDefault();
-		// if (articleDetails.title.trim() === "") {
-		//     alert("Looks like you forgot to add a title")
-		// } else if (articleDetails.title.trim().length < 9) {
-		//     return alert("Title is too short")
-		// } else if (articleDetails.article.trim().length > 9 && articleDetails.title.trim() !== "") {
-		//     setIsDisabled(true)
-		//     const userRef = doc(firebaseStore, 'articles', id?.toString()!);
-		//     await countTopics()
-		//     const words = articleDetails.article.trim().split(/\s+/).length;
-		//     const time = Math.ceil(words / 225);
-		// }
+		if (articleDetails.title.trim() === '') {
+			toast.error('Looks like you forgot to add a title');
+		} else if (articleDetails.title.trim().length < 9) {
+			return toast.error('Title is too short');
+		} else if (
+			articleDetails.content.trim().length > 9 &&
+			articleDetails.title.trim() !== ''
+		) {
+			setIsDisabled(true);
+			const words = articleDetails.content.trim().split(/\s+/).length;
+			const time = Math.ceil(words / 225);
+			handleEditArticle({
+				id: id as string,
+				data: {
+					title: articleDetails?.title.trim(),
+					subtitle: articleDetails?.subtitle?.trim() ?? "",
+					content: articleDetails?.content.trim(),
+					topics: articleDetails?.topics,
+					cover_image: articleDetails?.cover_image.trim(),
+					is_published: true,
+					reading_time: time,
+				},
+			});
+		}
 	};
 
 	const addTag = (e: React.FormEvent) => {
@@ -139,15 +168,6 @@ function useEditor() {
 
 	const toggleUnsplash = () => {
 		setIsUnsplashVisible(!isUnsplashVisible);
-	};
-
-	const uploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-		// const file = e.target.files![0];
-		// const uploadpath = `thumbnails/articles/${firebaseAuth.currentUser?.uid}/${file.name}`
-		// const storageRef = ref(firebaseStorage, uploadpath)
-		// await uploadBytes(storageRef, file)
-		// const photoUrl = await getDownloadURL(storageRef)
-		// setArticleDetails({ ...articleDetails, coverImageUrl: photoUrl })
 	};
 
 	const autoSaveDraft = async () => {
@@ -183,7 +203,6 @@ function useEditor() {
 		toggleUnsplash,
 		unsplashSearch,
 		insertMarkdown,
-		uploadImage,
 		isPublishing,
 		togglePublishing,
 		addTag,

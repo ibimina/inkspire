@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import styles from '@/styles/chatter.module.css';
 import { Header } from '@/components/index';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import Cookies from 'js-cookie';
 
 function FeedLayout({ children }: { children: React.ReactNode }) {
     const [isvisible, seIsVisible] = useState(false);
@@ -13,12 +12,7 @@ function FeedLayout({ children }: { children: React.ReactNode }) {
         seIsVisible(!isvisible);
     };
     const access = typeof window !== 'undefined' ? sessionStorage.getItem('access_token') : null;
-    useEffect(() => {
-        if (!access) {
-            Cookies.remove('loggedin');
-            router.push('/');
-        }
-    })
+
 
     return (
         <>

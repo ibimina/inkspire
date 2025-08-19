@@ -14,8 +14,8 @@ export const getArticleById = async (id: string) => {
     return await api.get(`/articles/${id}`);
 };
 
-export const updateArticle = async (id: string, data: any) => {
-    return await api.put(`/articles/${id}`, data);
+export const updateArticle = async ({ id, data }: { id: string, data: any }) => {
+    return await api.patch(`/articles/${id}`, data);
 };
 
 export const postLikeRequest = async (article_id: string) => {

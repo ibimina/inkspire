@@ -31,35 +31,12 @@ export async function getServerSideProps(context: any) {
 
 function Article({ metaData }: { metaData: any }) {
     const router = useRouter();
-    // const [articleDetails, setArticleDetails] = useState<{
-    //     id: string;
-    //     title: string;
-    //     subtitle: string;
-    //     content: string;
-    //     cover_image: string;
-    // }>();
         const id = router.query.id
 
     const {         article: articleDetails,
         isLoading,
         error,} = useGetArticleById(id as string)
 
-
-    // const { mutate, isPending } = useMutation({
-	// 	mutationFn: getArticleById,
-    //     onSuccess: async (response) => {
-    //         setArticleDetails(response.data);
-    //         const loader = document.querySelector(".loader")!;
-    //         loader.classList.add("hidden");
-    //     },
-	// 	onError: () => {
-	// 		toast.error("An error occurred while fetching the article");
-
-	// 	},
-    // });
-    // useEffect(() => {
-    //   mutate(id as string);
-    // }, [id]);
 
     const closeModal = (e: React.MouseEvent) => {
         e.preventDefault()
@@ -111,22 +88,22 @@ function Article({ metaData }: { metaData: any }) {
                         <div className="grid grid-cols-3">
                             <button className="flex items-center gap-1 mb-4"
                                 onClick={() => {
-                                    navigator.clipboard.writeText(`https://ibimina-chatter.vercel.app/inkspire/${articleDetails.id}`)
+                                    navigator.clipboard.writeText(`https://ibimina-chatter.vercel.app/${encodeURIComponent(articleDetails?.author.username)}/post/${articleDetails.id}`)
                                     alert("link copied")
                                 }}>
                                 <Image src="/images/icons8-link-gray-24.png" height={24} width={24} alt="whatsapp" />
 
                                 Copy link
                             </button>
-                            <TwitterShareButton className=" flex items-center gap-1 mb-4" url={`https://ibimina-chatter.vercel.app/inkspire/${articleDetails?.id}`} title={`${metaData?.title} by ${metaData?.author?.name}`} >
+                            <TwitterShareButton className=" flex items-center gap-1 mb-4" url={`https://ibimina-chatter.vercel.app/${encodeURIComponent(articleDetails?.author.username)}/post/${articleDetails?.id}`} title={`${articleDetails?.title} by ${articleDetails?.author?.username}`} >
                                 <Image src="/images/icons8-twitter.svg" height={24} width={24} alt="twitter" />
                                 twitter
                             </TwitterShareButton>
-                            <LinkedinShareButton className="flex items-center gap-1 mb-4" title={`${metaData?.title} by ${metaData?.author?.name}`} url={`https://ibimina-chatter.vercel.app/inkspire/${articleDetails?.id}`}>
+                            <LinkedinShareButton className="flex items-center gap-1 mb-4" title={`${articleDetails?.title} by ${articleDetails?.author?.name}`} url={`https://ibimina-chatter.vercel.app/${encodeURIComponent(articleDetails?.author.username)}/post/${articleDetails?.id}`}>
                                 <Image src="/images/icons8-linkedin.svg" height={24} width={24} alt="linkedin" />
                                 linkedin
                             </LinkedinShareButton>
-                            <WhatsappShareButton className="flex items-center gap-1" url={`https://ibimina-chatter.vercel.app/inkspire/${articleDetails?.id}`} title={`${metaData?.title} by ${metaData?.author?.name}`} separator=":: ">
+                            <WhatsappShareButton className="flex items-center gap-1" url={`https://ibimina-chatter.vercel.app/${encodeURIComponent(articleDetails?.author.username)}/post/${articleDetails?.id}`} title={`${articleDetails?.title} by ${articleDetails?.author?.name}`} separator=":: ">
                                 <Image src="/images/icons8-whatsapp.svg" height={24} width={24} alt="whatsapp" />
                                 whatsapp
                             </WhatsappShareButton>

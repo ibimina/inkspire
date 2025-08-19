@@ -14,7 +14,7 @@ describe('template spec', () => {
     cy.wait(2000)
 
     //check that the next page is topics route
-    cy.url().should('include', '/topics')
+    cy.url().should('include', '/add-topics')
     //select topics
 
     //click the button within the div that contains a p tag with JavaScript
