@@ -117,12 +117,12 @@ function User() {
                         <span className="block">Profile Tagline</span>
                         <input type="text" placeholder="What's your tagline e.g Frontend developer"
                             onChange={(e) => setForm({ ...form, profile_tagline: e.target.value })}
-                            value={form.profile_tagline} className="block w-full rounded-lg py-3 px-2" />
+                            value={form?.profile_tagline} className="block w-full rounded-lg py-3 px-2" />
                     </label>
                     <div className="mb-4">
                         <p className="mb-2">Profile Photo</p>
                         {
-                            form.profile_image ?
+                            form?.profile_image ?
                                 <div className="relative">
                                     <button
                                         onClick={() => setForm({ ...form, profile_image: '' })}
@@ -171,7 +171,7 @@ function User() {
                     </label>
                     <ul className="flex items-center gap-2 flex-wrap mt-8">
                         {currentUser &&
-                            form.topics?.map((doc: {title:string}, index: Key) =>
+                            form?.interested_topics?.map((doc: { title: string }, index: Key) =>
                                 <li key={index} className="bg-violet-200 p-2 rounded-sm text-current flex items-center gap-3">
                                     <p className="">
                                         {doc.title}
